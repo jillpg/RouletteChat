@@ -129,11 +129,28 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 .result-text {
     font-size: 1.5rem;
     color: #666;
+}
+
+.spectator-message {
+    text-align: center;
+    color: #666;
+}
+
+.spectator-message p:first-child {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.spectator-message p:last-child {
+    font-size: 0.95rem;
+    color: #888;
 }
 
 .result-winner {
@@ -441,6 +458,14 @@ header h1 {
         font-size: 1.8rem;
     }
     
+    .spectator-message p:first-child {
+        font-size: 1.1rem;
+    }
+    
+    .spectator-message p:last-child {
+        font-size: 0.9rem;
+    }
+    
     .spin-button {
         padding: 15px 30px;
         font-size: 1.2rem;
@@ -527,6 +552,14 @@ header h1 {
         padding: 12px 25px;
         font-size: 1.1rem;
         max-width: 250px;
+    }
+    
+    .spectator-message p:first-child {
+        font-size: 1rem;
+    }
+    
+    .spectator-message p:last-child {
+        font-size: 0.85rem;
     }
 }
 

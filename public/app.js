@@ -34,6 +34,14 @@ socket.on('admin-assigned', (admin) => {
         adminBadge.classList.remove('hidden');
         controlPanel.classList.remove('hidden');
         spinButton.classList.remove('hidden');
+        resultDisplay.innerHTML = '<p class="result-text">👉 Presiona "Girar" para comenzar</p>';
+    } else {
+        resultDisplay.innerHTML = `
+            <div class="spectator-message">
+                <p>👥 Modo Espectador</p>
+                <p>Observa cómo el admin ⭐ controla la ruleta</p>
+            </div>
+        `;
     }
 });
 
@@ -46,6 +54,14 @@ socket.on('initial-state', (state) => {
     
     if (state.isAdmin) {
         spinButton.disabled = false;
+        resultDisplay.innerHTML = '<p class="result-text">👉 Presiona "Girar" para comenzar</p>';
+    } else {
+        resultDisplay.innerHTML = `
+            <div class="spectator-message">
+                <p>👥 Modo Espectador</p>
+                <p>Observa cómo el admin ⭐ controla la ruleta</p>
+            </div>
+        `;
     }
 });
 
