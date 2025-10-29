@@ -599,3 +599,255 @@ header h1 {
     background: #5568d3;
 }
 
+/* ========================================
+   ESTILOS PARA LA SEGUNDA RULETA MODAL
+   ======================================== */
+
+/* Botón "¿Quién escoge primero?" */
+.first-picker-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(245, 87, 108, 0.3);
+    transition: all 0.3s;
+}
+
+.first-picker-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 87, 108, 0.5);
+}
+
+.first-picker-btn:active {
+    transform: translateY(0);
+}
+
+/* Modal Overlay */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content */
+.modal-content {
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modal Header */
+.modal-header {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 20px 30px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.close-modal-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+/* Modal Control Section */
+.modal-control-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-control-section h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.first-picker-options {
+    max-height: 350px;
+}
+
+/* Modal Roulette Section */
+.modal-roulette-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.mini-roulette-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.mini-arrow {
+    font-size: 35px;
+    top: -25px;
+}
+
+#firstPickerCanvas {
+    border-radius: 50%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-result-display {
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.modal-spin-btn {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Responsive para el Modal */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .modal-body {
+        padding: 20px;
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .mini-roulette-container {
+        width: 250px;
+        height: 250px;
+    }
+    
+    #firstPickerCanvas {
+        width: 250px !important;
+        height: 250px !important;
+    }
+    
+    .mini-arrow {
+        font-size: 30px;
+        top: -20px;
+    }
+    
+    .modal-spin-btn {
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .first-picker-btn {
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-body {
+        padding: 15px;
+    }
+    
+    .modal-control-section h3 {
+        font-size: 1.1rem;
+    }
+    
+    .mini-roulette-container {
+        width: 220px;
+        height: 220px;
+    }
+    
+    #firstPickerCanvas {
+        width: 220px !important;
+        height: 220px !important;
+    }
+    
+    .close-modal-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
+

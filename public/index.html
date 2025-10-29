@@ -39,6 +39,12 @@
             <!-- Panel de Control (Solo Admin) -->
             <div class="control-panel hidden" id="controlPanel">
                 <h2>Panel de Control</h2>
+                
+                <!-- Botón para abrir la ruleta de "¿Quién escoge primero?" -->
+                <button id="openFirstPickerBtn" class="first-picker-btn">
+                    🎯 ¿Quién escoge primero?
+                </button>
+                
                 <div class="options-manager">
                     <h3>Opciones de la Ruleta</h3>
                     <div class="add-option">
@@ -54,6 +60,44 @@
                 <h2>📋 Historial de Resultados</h2>
                 <div id="historyList" class="history-list">
                     <p class="empty-history">Aún no hay resultados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para "¿Quién escoge primero?" -->
+    <div id="firstPickerModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎯 ¿Quién escoge primero?</h2>
+                <button id="closeModalBtn" class="close-modal-btn">✖</button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Mini Panel de Control para esta ruleta -->
+                <div class="modal-control-section">
+                    <h3>Participantes</h3>
+                    <div class="add-option">
+                        <input type="text" id="newFirstPickerInput" placeholder="Nombre del participante..." maxlength="20">
+                        <button id="addFirstPickerBtn">+ Agregar</button>
+                    </div>
+                    <ul id="firstPickerList" class="options-list first-picker-options"></ul>
+                </div>
+
+                <!-- Mini Ruleta -->
+                <div class="modal-roulette-section">
+                    <div class="mini-roulette-container">
+                        <div class="roulette-arrow mini-arrow">▼</div>
+                        <canvas id="firstPickerCanvas" width="300" height="300"></canvas>
+                    </div>
+                    
+                    <div class="modal-result-display" id="firstPickerResult">
+                        <p class="result-text">Agrega participantes y presiona "Girar"</p>
+                    </div>
+
+                    <button id="spinFirstPickerBtn" class="spin-button modal-spin-btn">
+                        🎲 GIRAR
+                    </button>
                 </div>
             </div>
         </div>

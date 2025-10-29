@@ -343,3 +343,288 @@ newOptionInput.addEventListener('keypress', (e) => {
 // Dibujar ruleta inicial
 drawRoulette();
 
+// ============================================
+// SEGUNDA RULETA: ¿QUIÉN ESCOGE PRIMERO?
+// ============================================
+
+// Variables globales para la segunda ruleta
+let firstPickerOptions = [];
+let isFirstPickerSpinning = false;
+let currentFirstPickerRotation = 0;
+
+// Elementos del DOM para el modal
+const firstPickerModal = document.getElementById('firstPickerModal');
+const openFirstPickerBtn = document.getElementById('openFirstPickerBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+const firstPickerCanvas = document.getElementById('firstPickerCanvas');
+const firstPickerCtx = firstPickerCanvas.getContext('2d');
+const spinFirstPickerBtn = document.getElementById('spinFirstPickerBtn');
+const firstPickerResult = document.getElementById('firstPickerResult');
+const firstPickerList = document.getElementById('firstPickerList');
+const newFirstPickerInput = document.getElementById('newFirstPickerInput');
+const addFirstPickerBtn = document.getElementById('addFirstPickerBtn');
+
+// Eventos Socket.io para la segunda ruleta
+socket.on('first-picker-options-updated', (options) => {
+    firstPickerOptions = options;
+    updateFirstPickerList();
+    drawFirstPickerRoulette();
+});
+
+socket.on('first-picker-modal-opened', () => {
+    firstPickerModal.classList.remove('hidden');
+    drawFirstPickerRoulette();
+});
+
+socket.on('first-picker-modal-closed', () => {
+    firstPickerModal.classList.add('hidden');
+});
+
+socket.on('first-picker-spinning', (data) => {
+    isFirstPickerSpinning = true;
+    spinFirstPickerBtn.disabled = true;
+    
+    firstPickerResult.innerHTML = '<p class="result-text">🎡 Girando...</p>';
+    spinFirstPickerRoulette(data.rotation, data.duration);
+});
+
+socket.on('first-picker-result', (result) => {
+    isFirstPickerSpinning = false;
+    if (isAdmin) {
+        spinFirstPickerBtn.disabled = false;
+    }
+    
+    // Mostrar resultado con animación
+    setTimeout(() => {
+        firstPickerResult.innerHTML = `
+            <div class="result-winner">
+                🎉 ${result.winner} 🎉
+            </div>
+        `;
+    }, 500);
+    
+    // Actualizar historial principal
+    addHistoryItem(result);
+});
+
+// Funciones para el modal
+function openFirstPickerModal() {
+    if (isAdmin) {
+        socket.emit('open-first-picker-modal');
+        firstPickerModal.classList.remove('hidden');
+        drawFirstPickerRoulette();
+    }
+}
+
+function closeFirstPickerModal() {
+    if (isAdmin) {
+        socket.emit('close-first-picker-modal');
+        firstPickerModal.classList.add('hidden');
+    }
+}
+
+// Funciones de dibujo para la segunda ruleta
+function drawFirstPickerRoulette() {
+    const canvas = firstPickerCanvas;
+    const ctx = firstPickerCtx;
+    
+    if (firstPickerOptions.length === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#f0f0f0';
+        ctx.beginPath();
+        ctx.arc(150, 150, 150, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        ctx.fillStyle = '#999';
+        ctx.font = '18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Agrega participantes', 150, 150);
+        return;
+    }
+    
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 140;
+    const sliceAngle = (2 * Math.PI) / firstPickerOptions.length;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Dibujar cada segmento
+    firstPickerOptions.forEach((option, index) => {
+        const startAngle = index * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
+        
+        // Dibujar segmento
+        ctx.fillStyle = colors[index % colors.length];
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Dibujar borde
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        
+        // Dibujar texto
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + sliceAngle / 2);
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 14px Arial';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 3;
+        ctx.fillText(option, radius * 0.65, 4);
+        ctx.restore();
+    });
+    
+    // Círculo central
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 15, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.strokeStyle = '#f5576c';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+}
+
+function spinFirstPickerRoulette(finalRotation, duration) {
+    const startRotation = currentFirstPickerRotation;
+    const startTime = Date.now();
+    
+    function animate() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing cubic
+        const easeProgress = progress < 0.5
+            ? 4 * progress * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        
+        currentFirstPickerRotation = startRotation + (finalRotation - startRotation) * easeProgress;
+        
+        // Rotar canvas
+        firstPickerCtx.save();
+        firstPickerCtx.clearRect(0, 0, firstPickerCanvas.width, firstPickerCanvas.height);
+        firstPickerCtx.translate(150, 150);
+        firstPickerCtx.rotate((currentFirstPickerRotation * Math.PI) / 180);
+        firstPickerCtx.translate(-150, -150);
+        drawFirstPickerRouletteWithoutClear();
+        firstPickerCtx.restore();
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    animate();
+}
+
+function drawFirstPickerRouletteWithoutClear() {
+    const centerX = 150;
+    const centerY = 150;
+    const radius = 140;
+    const sliceAngle = (2 * Math.PI) / firstPickerOptions.length;
+    
+    firstPickerOptions.forEach((option, index) => {
+        const startAngle = index * sliceAngle;
+        const endAngle = startAngle + sliceAngle;
+        
+        firstPickerCtx.fillStyle = colors[index % colors.length];
+        firstPickerCtx.beginPath();
+        firstPickerCtx.moveTo(centerX, centerY);
+        firstPickerCtx.arc(centerX, centerY, radius, startAngle, endAngle);
+        firstPickerCtx.closePath();
+        firstPickerCtx.fill();
+        
+        firstPickerCtx.strokeStyle = '#fff';
+        firstPickerCtx.lineWidth = 2;
+        firstPickerCtx.stroke();
+        
+        firstPickerCtx.save();
+        firstPickerCtx.translate(centerX, centerY);
+        firstPickerCtx.rotate(startAngle + sliceAngle / 2);
+        firstPickerCtx.textAlign = 'center';
+        firstPickerCtx.fillStyle = '#fff';
+        firstPickerCtx.font = 'bold 14px Arial';
+        firstPickerCtx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        firstPickerCtx.shadowBlur = 3;
+        firstPickerCtx.fillText(option, radius * 0.65, 4);
+        firstPickerCtx.restore();
+    });
+    
+    firstPickerCtx.fillStyle = '#fff';
+    firstPickerCtx.beginPath();
+    firstPickerCtx.arc(centerX, centerY, 15, 0, 2 * Math.PI);
+    firstPickerCtx.fill();
+    firstPickerCtx.strokeStyle = '#f5576c';
+    firstPickerCtx.lineWidth = 3;
+    firstPickerCtx.stroke();
+}
+
+// Funciones de gestión de participantes
+function updateFirstPickerList() {
+    if (!isAdmin) return;
+    
+    firstPickerList.innerHTML = '';
+    firstPickerOptions.forEach((option, index) => {
+        const li = document.createElement('li');
+        li.className = 'option-item';
+        li.innerHTML = `
+            <span class="option-name">${option}</span>
+            <button class="remove-btn" data-index="${index}">Eliminar</button>
+        `;
+        firstPickerList.appendChild(li);
+    });
+    
+    // Event listeners para botones de eliminar
+    document.querySelectorAll('#firstPickerList .remove-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            removeFirstPickerOption(index);
+        });
+    });
+}
+
+function addFirstPickerOption() {
+    const newOption = newFirstPickerInput.value.trim();
+    if (newOption && !firstPickerOptions.includes(newOption)) {
+        firstPickerOptions.push(newOption);
+        socket.emit('update-first-picker-options', firstPickerOptions);
+        newFirstPickerInput.value = '';
+    }
+}
+
+function removeFirstPickerOption(index) {
+    firstPickerOptions.splice(index, 1);
+    socket.emit('update-first-picker-options', firstPickerOptions);
+}
+
+// Event Listeners para el modal
+openFirstPickerBtn.addEventListener('click', openFirstPickerModal);
+
+closeModalBtn.addEventListener('click', closeFirstPickerModal);
+
+// Cerrar modal al hacer click fuera del contenido
+firstPickerModal.addEventListener('click', (e) => {
+    if (e.target === firstPickerModal && isAdmin) {
+        closeFirstPickerModal();
+    }
+});
+
+spinFirstPickerBtn.addEventListener('click', () => {
+    if (!isFirstPickerSpinning && isAdmin && firstPickerOptions.length > 0) {
+        socket.emit('spin-first-picker');
+    }
+});
+
+addFirstPickerBtn.addEventListener('click', addFirstPickerOption);
+
+newFirstPickerInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        addFirstPickerOption();
+    }
+});
+
