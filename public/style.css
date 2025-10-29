@@ -339,30 +339,207 @@ header h1 {
     }
 }
 
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    header {
+        padding: 15px 20px;
+        margin-bottom: 20px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .roulette-section,
+    .control-panel,
+    .history-section {
+        padding: 20px;
+    }
+    
+    .roulette-container {
+        width: 350px;
+        height: 350px;
+    }
+    
+    #rouletteCanvas {
+        width: 350px !important;
+        height: 350px !important;
+    }
+    
+    .result-winner {
+        font-size: 2rem;
+    }
+    
+    .spin-button {
+        padding: 18px 40px;
+        font-size: 1.3rem;
+        width: 100%;
+        max-width: 350px;
+    }
+}
+
 @media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
     header {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
         text-align: center;
+        padding: 15px;
     }
     
     header h1 {
         font-size: 1.5rem;
     }
     
+    .user-info {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .user-info span {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .roulette-section,
+    .control-panel,
+    .history-section {
+        padding: 15px;
+    }
+    
     .roulette-container {
-        width: 300px;
-        height: 300px;
+        width: 280px;
+        height: 280px;
     }
     
     #rouletteCanvas {
-        width: 300px !important;
-        height: 300px !important;
+        width: 280px !important;
+        height: 280px !important;
+    }
+    
+    .roulette-arrow {
+        font-size: 35px;
+        top: -25px;
+    }
+    
+    .result-display {
+        min-height: 60px;
+    }
+    
+    .result-text {
+        font-size: 1.2rem;
+    }
+    
+    .result-winner {
+        font-size: 1.8rem;
     }
     
     .spin-button {
         padding: 15px 30px;
         font-size: 1.2rem;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    /* Panel de Control */
+    .control-panel h2,
+    .history-section h2 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .options-manager h3 {
+        font-size: 1rem;
+    }
+    
+    .add-option {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .add-option input,
+    .add-option button {
+        width: 100%;
+        font-size: 1rem;
+        padding: 12px;
+    }
+    
+    .option-item {
+        padding: 10px;
+    }
+    
+    .option-name {
+        font-size: 0.95rem;
+    }
+    
+    .remove-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        white-space: nowrap;
+    }
+    
+    /* Historial */
+    .history-item {
+        padding: 12px;
+    }
+    
+    .history-winner {
+        font-size: 1.1rem;
+    }
+    
+    .history-time {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 400px) {
+    header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .roulette-container {
+        width: 250px;
+        height: 250px;
+    }
+    
+    #rouletteCanvas {
+        width: 250px !important;
+        height: 250px !important;
+    }
+    
+    .roulette-arrow {
+        font-size: 30px;
+        top: -20px;
+    }
+    
+    .result-winner {
+        font-size: 1.5rem;
+    }
+    
+    .spin-button {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+        max-width: 250px;
+    }
+}
+
+/* Mejoras táctiles para móvil */
+@media (hover: none) and (pointer: coarse) {
+    .spin-button,
+    .add-option button,
+    .remove-btn {
+        min-height: 44px; /* Tamaño mínimo recomendado para touch */
+    }
+    
+    .add-option input {
+        font-size: 16px; /* Evita zoom en iOS */
     }
 }
 

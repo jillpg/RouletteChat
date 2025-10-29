@@ -105,11 +105,24 @@ http://localhost:3000
 3. Observa cómo el admin gira la ruleta
 4. Verás los resultados aparecer instantáneamente
 
-## 📱 Dispositivos Compatibles
+## 📱 Optimizado para Móviles
 
-- ✅ Desktop (Chrome, Firefox, Safari, Edge)
-- ✅ Mobile (iOS Safari, Chrome Android)
-- ✅ Tablets
+La aplicación está **completamente optimizada** para dispositivos móviles:
+
+- ✅ **Desktop** (Chrome, Firefox, Safari, Edge)
+- ✅ **Smartphones** (iOS Safari, Chrome Android)
+  - Diseño responsive adaptado a pantallas pequeñas
+  - Controles táctiles optimizados (mínimo 44px)
+  - Prevención de zoom automático en inputs
+  - Ruleta adaptable según tamaño de pantalla
+- ✅ **Tablets** (iPad, Android Tablets)
+  - Layout optimizado para pantallas medianas
+
+### Breakpoints Responsive
+- **1200px**: Layout de una columna
+- **768px**: Ajustes para tablets
+- **600px**: Optimización móvil completa
+- **400px**: Pantallas muy pequeñas
 
 ## 🛠️ Tecnologías Utilizadas
 
